@@ -18,6 +18,26 @@ const courses = [
 	"Textile",
 ]
 
+const CountrySchema = new Schema({
+	name: String,
+	phonecode: String,
+	isoCode: String,
+	flag: String,
+	currency: String,
+})
+
+const StateSchema = new Schema({
+	name: String,
+	isoCode: String,
+	countryCode: String,
+})
+
+const CitySchema = new Schema({
+	name: String,
+	countryCode: String,
+	stateCode: String,
+})
+
 const CollegeSchema = new Schema({
 	name: {
 		type: String,
@@ -28,15 +48,15 @@ const CollegeSchema = new Schema({
 		required: true
 	},
 	city: {
-		type: String,
+		type: CitySchema,
 		required: true
 	},
 	state: {
-		type: String,
+		type: StateSchema,
 		required: true
 	},
 	country: {
-		type: String,
+		type: CountrySchema,
 		required: true
 	},
 	students: [{
