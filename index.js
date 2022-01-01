@@ -58,14 +58,14 @@ app.get("/colleges/:id/students", async (req, res) => {
   const { page } = req.query;
   const perPage = 10;
   const students = await Student.find({ college: req.params.id })
-    .skip(perPage * page - 1)
+    .skip(perPage * (page - 1))
     .limit(perPage);
-  const total = await Student.countDocuments(filter);
+  const total = await Student.countDocuments({ college: req.params.id });
   res.json({ data: students, pages: Math.ceil(total / perPage) });
 });
 
 app.get("/colleges/:id/students/:studentId", async (req, res) => {
-  const student = await Student.findById(req.params.studentId);
+  const student = await Student.findById(req.params.studentId).populate("college");
   res.json({ data: student });
 });
 
@@ -99,7 +99,7 @@ app.get("/colleges/:id/similar", async (req, res) => {
         },
       },
     ],
-  }).select("name noOfStudents state courses").limit(10);
+  }).select("name noOfStudents state courses city country").limit(10);
   if (similarColleges.length === 0) {
     return res.status(404).json({ message: "No similar colleges found" });
   }
