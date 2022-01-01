@@ -41,7 +41,6 @@ app.get("/colleges", async (req, res) => {
     filter.courses = { $in: courses };
   }
 
-  console.log(filter)
   const perPage = 10;
   const colleges = await College.find(filter)
     .skip(perPage * (page - 1))
