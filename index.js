@@ -84,13 +84,13 @@ app.get("/colleges/:id/similar", async (req, res) => {
         },
       },
       {
-        noOfStudents: {
-          $gte: college.noOfStudents - 100,
+        numberOfStudents: {
+          $gte: college.numberOfStudents - 100,
         },
       },
       {
-        noOfStudents: {
-          $lte: college.noOfStudents + 100,
+        numberOfStudents: {
+          $lte: college.numberOfStudents + 100,
         },
       },
       {
@@ -99,7 +99,7 @@ app.get("/colleges/:id/similar", async (req, res) => {
         },
       },
     ],
-  }).select("name noOfStudents state courses city country").limit(10);
+  }).select("name numberOfStudents state courses city country").limit(10);
   if (similarColleges.length === 0) {
     return res.status(404).json({ message: "No similar colleges found" });
   }
