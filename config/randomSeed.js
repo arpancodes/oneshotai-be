@@ -11,21 +11,15 @@ const alphabet = '0123456789';
 const nanoid = customAlphabet(alphabet, 15);
 
 async function randomSeed() {
-	mongoose.connect(MONGODB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	}).then(async () => {
-		console.log("MongoDB Connected...");
-		for (let i = 0; i < 1000; i++){
+		for (let i = 0; i < 50_000; i++){
 			await createAndAddStudents();
 		}
 		console.log("Done")
-	})
 }
 
 async function createAndAddStudents(){
 	const college = await College.getRandom();
-	const student = createRandomStudent("Student " + nanoid());
+	const student = createRandomStudent("Student" + nanoid());
 	student.college = college._id;
 	college.students.push(student._id);
 	college.numberOfStudents++;

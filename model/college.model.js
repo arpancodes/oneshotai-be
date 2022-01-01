@@ -48,15 +48,15 @@ const CollegeSchema = new Schema({
 		required: true
 	},
 	city: {
-		type: CitySchema,
+		type: String,
 		required: true
 	},
 	state: {
-		type: StateSchema,
+		type: String,
 		required: true
 	},
 	country: {
-		type: CountrySchema,
+		type: String,
 		required: true
 	},
 	students: [{
