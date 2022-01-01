@@ -68,26 +68,30 @@ function createRandomStudent(name) {
 }
 
 
+function seed(){
+for (let i = 0; i < 100; i++){
+	const randomNameCollege = `College${i+1}`
+	const randomNameStudent = `College${i+1}`
+	const randomCollege = createRandomCollege(randomNameCollege);
+	const randomStudent = createRandomStudent(randomNameStudent)
+	randomStudent.college = randomCollege._id;
+	randomCollege.students.push(randomStudent._id);
+	randomCollege.numberOfStudents++;
+	colleges.push(randomCollege);
+	students.push(randomStudent);
+}
+mongoose.connect(MONGODB_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(async() => {
+		await College.insertMany(colleges);
+		await Student.insertMany(students);
+	})
+	.catch(err => console.log(err));
 
-	for (let i = 0; i < 100; i++){
-		const randomNameCollege = `College${i+1}`
-		const randomNameStudent = `College${i+1}`
-		const randomCollege = createRandomCollege(randomNameCollege);
-		const randomStudent = createRandomStudent(randomNameStudent)
-		randomStudent.college = randomCollege._id;
-		randomCollege.students.push(randomStudent._id);
-		randomCollege.numberOfStudents++;
-		colleges.push(randomCollege);
-		students.push(randomStudent);
-	}
-	mongoose.connect(MONGODB_URI, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		})
-		.then(async() => {
-			console.log('MongoDB Connected...')
-			console.log(MONGODB_URI)
-			await College.insertMany(colleges);
-			await Student.insertMany(students);
-		})
-		.catch(err => console.log(err));
+}
+module.exports = {
+	createRandomStudent,
+	default: seed,
+}

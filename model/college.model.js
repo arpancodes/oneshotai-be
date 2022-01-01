@@ -74,6 +74,11 @@ const CollegeSchema = new Schema({
 	}]
 });
 
+CollegeSchema.statics.getRandom = async function(){
+	const total = await this.count()
+	const random = Math.floor(Math.random() * total);
+	return this.findOne().skip(random)
+}
 
 module.exports ={
 	default: model('College', CollegeSchema),
