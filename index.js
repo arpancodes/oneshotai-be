@@ -35,15 +35,16 @@ app.get("/colleges", async (req, res) => {
   const { page, states, courses } = req.query;
   const filter = {};
   if (states) {
-    filter.state = states;
+    filter["state.name"] = states;
   }
   if (courses) {
     filter.courses = { $in: courses };
   }
 
+  console.log(filter)
   const perPage = 10;
   const colleges = await College.find(filter)
-    .skip(perPage * page - 1)
+    .skip(perPage * (page - 1))
     .limit(perPage);
   const total = await College.countDocuments(filter);
   res.json({ data: colleges, pages: Math.ceil(total / perPage) });
@@ -94,8 +95,8 @@ app.get("/colleges/:id/similar", async (req, res) => {
         },
       },
       {
-        state: {
-          $eq: college.state,
+        "state.isoCode": {
+          $eq: college.state.isoCode,
         },
       },
     ],
@@ -110,7 +111,7 @@ app.get("/colleges/stats/states", async (req, res) => {
   const colleges = await College.aggregate([
     {
       $group: {
-        _id: "$state",
+        _id: "$state.name",
         count: {
           $sum: 1,
         },
